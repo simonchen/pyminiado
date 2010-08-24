@@ -1,4 +1,16 @@
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#
 # A mini library used with connecting MS Access DB using ADO from Win32 COM.
+# This module, along with any associated source code and files, is licensed
+# under The GNU General Public License (GPLv3)
+#
+# Author: Xinyi Chen
+# Created at: 2010/8/10
+# Last modified: 2010/8/24
+#
+# Email: simonchen@likefreelancer.com
+#
+# @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 import types
 #import win32api
 import codecs
