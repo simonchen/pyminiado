@@ -6,7 +6,7 @@
 #
 # Author: Xinyi Chen
 # Created at: 2010/8/10
-# Last modified: 2010/8/24
+# Last modified: 2010/10/12
 #
 # Email: simonchen@likefreelancer.com
 #
@@ -34,6 +34,7 @@ def reform_sql(sql, args=[]):
                 arg = str(arg)
             newargs.append(arg)
     sql = sql %tuple(newargs)
+    #print sql
     
     return sql
 
@@ -76,9 +77,9 @@ class AdoDB:
         self.conn = client.Dispatch("ADODB.Connection")
         self.sync = sync
         self.lock = Lock()
+        
         try:
             self.conn.Open('PROVIDER=Microsoft.Jet.OLEDB.4.0;DATA SOURCE=%s;Persist Security Info=False;'%filepath, username, passwd)
-            self.rs = client.Dispatch("ADODB.Recordset")
         except pythoncom.com_error, (hr, msg, exc, arg):
             raise Errors(Errors.CONNECTION_FAILED, "", hr, msg, exc)
         
@@ -127,24 +128,25 @@ class AdoDB:
         sql = reform_sql(sql, args)
 
         try:
-            self.rs.Open(sql, self.conn, 1, 3) # 1, 3 means adOpenKeyset and adLockOptimistic 
+            rs = client.Dispatch("ADODB.Recordset")
+            rs.Open(sql, self.conn, 1, 3) # 1, 3 means adOpenKeyset and adLockOptimistic
         except pythoncom.com_error, (hr, msg, exc, arg):
             raise Errors(Errors.OPEN_RECORDSET_FAILED, sql, hr, msg, exc)
-        
+                
         #description with fields
         desc = []
-        for i in range(self.rs.Fields.Count):
-            desc.append((self.rs.Fields.Item(i).Name.encode('utf-8'), self.rs.Fields.Item(i).Type, self.rs.Fields.Item(i).DefinedSize))
+        for i in range(rs.Fields.Count):
+            desc.append((rs.Fields.Item(i).Name.encode('utf-8'), rs.Fields.Item(i).Type, rs.Fields.Item(i).DefinedSize))
         
         #rows
         rows = []
         while 1:
-            if self.rs.EOF:
+            if rs.EOF:
                 break
             
             row = []
             for field in desc:
-                v = self.rs.Fields.Item(field[0]).Value
+                v = rs.Fields.Item(field[0]).Value
                 if v is not None and isinstance(v, types.StringTypes):
                     row.append(v.encode('utf-8'))
                 else:
@@ -152,9 +154,9 @@ class AdoDB:
                 
             rows.append(row)
             
-            self.rs.MoveNext()
+            rs.MoveNext()
         
-        self.rs.Close()
+        rs.Close()
             
         return (rows, desc)
     
