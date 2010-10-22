@@ -16,7 +16,7 @@
 #              output string from 'select' statement is still using UTF8 encoding.
 #
 # Any feedback / questions through the below url:
-#
+# http://www.likefreelancer.com/?page_id=173
 #
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 import types
