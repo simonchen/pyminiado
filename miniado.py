@@ -6,9 +6,17 @@
 #
 # Author: Xinyi Chen
 # Created at: 2010/8/10
-# Last modified: 2010/10/12
+# Last modified: 2010/10/22
+# Current version: 1.0.2
 #
-# Email: simonchen@likefreelancer.com
+# Updating logs:
+# 2010/10/12 - execute_sel isn't related to multi-threads.
+# 2010/10/22 - Supports UTF8/Unicode string as input data, all sql statements
+#               (insert/update/select) will be working on unicode encoding. note: the
+#              output string from 'select' statement is still using UTF8 encoding.
+#
+# Any feedback / questions through the below url:
+#
 #
 # @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 import types
@@ -36,7 +44,7 @@ def reform_sql(sql, args=[]):
     sql = sql %tuple(newargs)
     #print sql
     
-    return sql
+    return sql.decode('utf8') # convert sql string as unicode char-set
 
 class Errors(Exception):
     CONNECTION_FAILED = 1
